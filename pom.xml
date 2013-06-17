@@ -7,7 +7,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>libarsnova-js</name>
-	<description>libarsnova-js is a client library for JavaScript applications handling the communication (REST and Socket.IO) with the ARSnova backend. </description>
+	<description>libarsnova-js is a client library for JavaScript applications handling the communication (REST and Socket.IO) with the ARSnova backend.</description>
 	<url>http://blog.mni.thm.de/arsnova/arsnova-blog/</url>
 	<inceptionYear>2013</inceptionYear>
 
@@ -70,6 +70,11 @@
 		<system>Redmine</system>
 		<url>https://scm.thm.de/redmine/projects/arsnova-presenter</url>
 	</issueManagement>
+
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>https://jenkins.mni.thm.de/jenkins/job/ARSnova-lib-js.master/</url>
+	</ciManagement>
 
 	<build>
 		<sourceDirectory>src/main/websources</sourceDirectory>
