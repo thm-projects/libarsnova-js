@@ -1,6 +1,6 @@
 {
-	"name": "libarsnova-dojo",
-	"dojoBuild": "libarsnova-dojo.profile.js",
+	"name": "libarsnova-js",
+	"dojoBuild": "libarsnova.profile.js",
 	"contributors": [
 		{
 			"name": "Daniel Gerhardt",
