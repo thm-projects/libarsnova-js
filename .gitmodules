@@ -1,0 +1,6 @@
+[submodule "vendor/dojotoolkit.org/dojo"]
+	path = vendor/dojotoolkit.org/dojo
+	url = https://github.com/dojo/dojo.git
+[submodule "vendor/dojotoolkit.org/util"]
+	path = vendor/dojotoolkit.org/util
+	url = https://github.com/dojo/util.git
