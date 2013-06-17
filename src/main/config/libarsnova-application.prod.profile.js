@@ -8,8 +8,7 @@ var profile = (function() {
 		basePath: "../../..",
 		action: "release",
 		mini: true,
-		//optimize: "shrinksafe", // causes problems
-		//layerOptimize: "closure", // causes problems
+		layerOptimize: "closure",
 		cssOptimize: "comments",
 
 		defaultConfig: {
