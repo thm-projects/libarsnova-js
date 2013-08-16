@@ -25,7 +25,7 @@ define(
 		"arsnova-api/session",
 		"arsnova-api/socket"
 	],
-	function(config, JsonRestStore, MemoryStore, CacheStore, sessionModel, socket) {
+	function (config, JsonRestStore, MemoryStore, CacheStore, sessionModel, socket) {
 		"use strict";
 
 		var
@@ -37,7 +37,7 @@ define(
 			questionStore = null
 		;
 
-		sessionModel.watchKey(function(name, oldValue, value) {
+		sessionModel.watchKey(function (name, oldValue, value) {
 			questionJsonRest = new JsonRestStore({
 				target: apiPrefix,
 				idProperty: "_id"
@@ -49,17 +49,17 @@ define(
 		});
 
 		self = {
-			getStore: function() {
+			getStore: function () {
 				return questionStore;
 			},
 
-			getAll: function() {
+			getAll: function () {
 				return questionStore.query({
 					sessionkey: sessionModel.getKey()
 				});
 			},
 
-			get: function(id) {
+			get: function (id) {
 				var question = questionStore.get(id);
 				if (null === question.text) {
 					/* force reloading of question */
@@ -70,11 +70,11 @@ define(
 				return question;
 			},
 
-			remove: function(id) {
+			remove: function (id) {
 				questionStore.remove(id);
 			},
 
-			onQuestionAvailable: function(callback) {
+			onQuestionAvailable: function (callback) {
 				socket.on("audQuestionAvail", callback);
 			}
 		};

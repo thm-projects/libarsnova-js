@@ -26,7 +26,7 @@ define(
 		"dojo/store/Cache",
 		"arsnova-api/socket"
 	],
-	function(config, declare, Stateful, JsonRestStore, MemoryStore, CacheStore, socket) {
+	function (config, declare, Stateful, JsonRestStore, MemoryStore, CacheStore, socket) {
 		"use strict";
 
 		var
@@ -53,70 +53,70 @@ define(
 			sessionStore = CacheStore(sessionJsonRest, sessionMemory)
 		;
 
-		sessionState.watch("key", function(name, oldValue, value) {
+		sessionState.watch("key", function (name, oldValue, value) {
 			console.log("Session key changed: " + value);
 			socket.emit("setSession", {keyword: value});
 		});
 
-		socket.onReconnect(function() {
+		socket.onReconnect(function () {
 			if (null !== session.getKey()) {
 				socket.emit("setSession", {keyword: session.getKey()});
 			}
 		});
 
-		socket.on("activeUserCountData", function(activeUserCount) {
+		socket.on("activeUserCountData", function (activeUserCount) {
 			sessionState.set("activeUserCount", activeUserCount);
 		});
 
 		self = {
-			watchKey: function(callback) {
+			watchKey: function (callback) {
 				sessionState.watch("key", callback);
 			},
 
-			getKey: function() {
+			getKey: function () {
 				return sessionState.get("key");
 			},
 
-			setKey: function(value) {
+			setKey: function (value) {
 				if (value !== sessionState.get("key")) {
 					sessionState.set("key", value);
 				}
 			},
 
-			getCurrent: function() {
+			getCurrent: function () {
 				return sessionStore.get(sessionState.get("key"));
 			},
 
-			getStore: function() {
+			getStore: function () {
 				return sessionStore;
 			},
 
-			getVisited: function() {
+			getVisited: function () {
 				return sessionStore.query({visitedonly: true});
 			},
 
-			getOwned: function() {
+			getOwned: function () {
 				return sessionStore.query({ownedonly: true});
 			},
 
-			createSession: function(shortName, description) {
+			createSession: function (shortName, description) {
 				sessionStore.put({
 					name: description,
 					shortName: shortName
 				}).then(
-					function(response) {
+					function (response) {
 						console.log("Session created: " + response._id);
 						sessionState.set(key, response._id);
 
 						return true;
 					},
-					function(error) {
+					function (error) {
 						return false;
 					}
 				);
 			},
 
-			watchActiveUserCount: function(callback) {
+			watchActiveUserCount: function (callback) {
 				sessionState.watch("activeUserCount", callback);
 			}
 		};

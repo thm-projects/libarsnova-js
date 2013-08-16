@@ -29,7 +29,7 @@ define(
 		"arsnova-api/session",
 		"arsnova-api/socket"
 	],
-	function(config, declare, string, when, Stateful, JsonRestStore, MemoryStore, CacheStore, sessionModel, socket) {
+	function (config, declare, string, when, Stateful, JsonRestStore, MemoryStore, CacheStore, sessionModel, socket) {
 		"use strict";
 
 		var
@@ -62,7 +62,7 @@ define(
 			buildQuestionSortIndex = null
 		;
 
-		sessionModel.watchKey(function(name, oldValue, value) {
+		sessionModel.watchKey(function (name, oldValue, value) {
 			questionJsonRest = new JsonRestStore({
 				target: apiPrefix,
 				idProperty: "_id"
@@ -74,7 +74,7 @@ define(
 			questionState.set("id", null);
 		});
 
-		questionState.watch("id", function(name, oldValue, value) {
+		questionState.watch("id", function (name, oldValue, value) {
 			if (null === value) {
 				return;
 			}
@@ -93,34 +93,34 @@ define(
 			answerCountStore = [];
 		});
 
-		socket.on("lecQuestionAvail", function(lecturerQuestionId) {
+		socket.on("lecQuestionAvail", function (lecturerQuestionId) {
 
 		});
 
-		socket.on("answersTolecQuestionAvail", function(lecturerQuestionId) {
+		socket.on("answersTolecQuestionAvail", function (lecturerQuestionId) {
 
 		});
 
 		self = {
-			watchId: function(callback) {
+			watchId: function (callback) {
 				questionState.watch("id", callback);
 			},
 
-			getId: function() {
+			getId: function () {
 				return questionState.get("id");
 			},
 
-			setId: function(id) {
+			setId: function (id) {
 				if (questionState.get("id") !== id) {
 					questionState.set("id", id);
 				}
 			},
 
-			getStore: function() {
+			getStore: function () {
 				return questionStore;
 			},
 
-			getAll: function() {
+			getAll: function () {
 				if (null === questionStore) {
 					console.log("No session selected");
 
@@ -130,7 +130,7 @@ define(
 				var questions = questionStore.query({
 					sessionkey: sessionModel.getKey()
 				});
-				questions.then(function() {
+				questions.then(function () {
 					buildQuestionSortIndex();
 					self.setId(questionSortIndex[0]);
 				});
@@ -138,7 +138,7 @@ define(
 				return questions;
 			},
 
-			get: function(questionId) {
+			get: function (questionId) {
 				if ("undefined" === typeof questionId || null === questionId) {
 					if (null === (questionId = self.getId())) {
 						return null;
@@ -148,14 +148,14 @@ define(
 				return questionStore.get(questionId);
 			},
 
-			update: function(question) {
+			update: function (question) {
 				return questionStore.put(question, {
 					id: question._id,
 					overwrite: true
 				});
 			},
 
-			next: function() {
+			next: function () {
 				if (0 === self.getCount()) {
 					console.log("No questions available");
 
@@ -178,7 +178,7 @@ define(
 				}
 			},
 
-			prev: function() {
+			prev: function () {
 				if (0 === self.getCount()) {
 					console.log("No questions available");
 
@@ -201,7 +201,7 @@ define(
 				}
 			},
 
-			first: function() {
+			first: function () {
 				if (0 === self.getCount()) {
 					console.log("No questions available");
 
@@ -215,7 +215,7 @@ define(
 				}
 			},
 
-			last: function() {
+			last: function () {
 				if (0 === self.getCount()) {
 					console.log("No questions available");
 
@@ -229,7 +229,7 @@ define(
 				}
 			},
 
-			getPosition: function() {
+			getPosition: function () {
 				if (0 === self.getCount()) {
 					return -1;
 				}
@@ -243,7 +243,7 @@ define(
 				return -1;
 			},
 
-			getCount: function() {
+			getCount: function () {
 				if (null === questionMemory) {
 					return 0;
 				}
@@ -251,7 +251,7 @@ define(
 				return questionMemory.data.length;
 			},
 
-			getUnanswered: function() {
+			getUnanswered: function () {
 				if (null === questionStore) {
 					console.log("No session selected");
 
@@ -264,14 +264,14 @@ define(
 				});
 			},
 
-			getAnswers: function(piRound, refresh) {
+			getAnswers: function (piRound, refresh) {
 				if (null === self.getId()) {
 					console.log("No question selected");
 
 					return null;
 				}
 
-				return when(self.get(), function(question) {
+				return when(self.get(), function (question) {
 					if ("freetext" === question.questionType) {
 						if (!refresh && ftAnswerMemory.data.length > 0) {
 							return ftAnswerMemory.query();
@@ -301,7 +301,7 @@ define(
 				});
 			},
 
-			removeAnswer: function(id) {
+			removeAnswer: function (id) {
 				if (null === self.getId()) {
 					console.log("No question selected");
 
@@ -310,10 +310,10 @@ define(
 				ftAnswerStore.remove(id);
 			},
 
-			updateLocks: function(questionId, lockQuestion, lockStats, lockCorrect) {
+			updateLocks: function (questionId, lockQuestion, lockStats, lockCorrect) {
 				var question = self.get(questionId);
 
-				return when(question, function(question) {
+				return when(question, function (question) {
 					question.active = !lockQuestion;
 					question.showStatistic = !lockStats;
 					question.showAnswer = !lockCorrect;
@@ -322,20 +322,20 @@ define(
 				});
 			},
 
-			startSecondPiRound: function(questionId) {
+			startSecondPiRound: function (questionId) {
 				var question = self.get(questionId);
-				return when(question, function(question) {
+				return when(question, function (question) {
 					question.piRound = 2;
 					return self.update(question);
 				});
 			},
 
-			onAnswersAvailable: function(callback) {
+			onAnswersAvailable: function (callback) {
 				socket.on("answersToLecQuestionAvail", callback);
 			}
 		};
 
-		buildQuestionSortIndex = function() {
+		buildQuestionSortIndex = function () {
 			questionSortIndex = [];
 			for (var questionId in questionMemory.index) {
 				//var question = self.get(questionId);

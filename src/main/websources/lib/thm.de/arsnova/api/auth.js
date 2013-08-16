@@ -22,7 +22,7 @@ define(
 		"dojo/string",
 		"dojo/request"
 	],
-	function(config, string, request) {
+	function (config, string, request) {
 		"use strict";
 
 		var
@@ -32,9 +32,9 @@ define(
 			loginType = null,
 			username = null,
 
-			checkLoginStatus = function() {
+			checkLoginStatus = function () {
 				request.get(apiPrefix, {sync: true, handleAs: "json"}).then(
-					function(response) {
+					function (response) {
 						if ("ldap" === response.type) {
 							/* guest login */
 							loginError = true;
@@ -43,7 +43,7 @@ define(
 							username = response.username;
 						}
 					},
-					function(error) {
+					function (error) {
 						loginError = true;
 					}
 				);
@@ -51,7 +51,7 @@ define(
 		;
 
 		self = {
-			init: function(loginHandler) {
+			init: function (loginHandler) {
 				console.log("-- auth.init --");
 
 				checkLoginStatus();
@@ -69,7 +69,7 @@ define(
 				}
 			},
 
-			getServices: function() {
+			getServices: function () {
 				var
 					successUrl = encodeURIComponent(location.pathname + location.search + location.hash),
 					failureUrl = encodeURIComponent(location.pathname + location.search + "#!/auth/error")
@@ -109,11 +109,11 @@ define(
 					}
 				};
 			},
-			logout: function() {
+			logout: function () {
 				location.href = apiPrefix + "logout";
 			},
 
-			isLoggedIn: function() {
+			isLoggedIn: function () {
 				return !loginError;
 			}
 		};

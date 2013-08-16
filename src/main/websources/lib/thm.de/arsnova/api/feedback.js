@@ -20,7 +20,7 @@ define(
 	[
 		"arsnova-api/socket"
 	],
-	function(socket) {
+	function (socket) {
 		"use strict";
 
 		var
@@ -28,7 +28,7 @@ define(
 		;
 
 		self = {
-			onReceive: function(callback) {
+			onReceive: function (callback) {
 				socket.on("feedbackData", callback);
 			}
 		};

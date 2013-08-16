@@ -1,5 +1,7 @@
 /* Dojo application profile for production */
-var profile = (function() {
+var profile = (function () {
+	"use strict";
+
 	var libPath = "src/main/websources/lib/";
 	var dojoPath = "vendor/dojotoolkit.org/";
 	var versionFilePath = "target/tmp/dojo/version/";
@@ -55,4 +57,4 @@ var profile = (function() {
 			}
 		}
 	};
-})();
+}());

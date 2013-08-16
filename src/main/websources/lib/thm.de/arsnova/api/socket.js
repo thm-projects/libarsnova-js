@@ -22,7 +22,7 @@ define(
 		"dojo/when",
 		"dojo/request"
 	],
-	function(config, when, request) {
+	function (config, when, request) {
 		"use strict";
 
 		var
@@ -36,13 +36,13 @@ define(
 		;
 
 		self = {
-			connect: function() {
+			connect: function () {
 				if (!io || socket) {
 					return;
 				}
-				socket = when(socketUrl, function(socketUrl) {
+				socket = when(socketUrl, function (socketUrl) {
 					var socketConn = io.connect(socketUrl);
-					socketConn.on("connect", function() {
+					socketConn.on("connect", function () {
 						if (!firstConnect) {
 							return;
 						}
@@ -55,12 +55,12 @@ define(
 						}
 						callbacks = [];
 					});
-					socketConn.on("disconnect", function() {
+					socketConn.on("disconnect", function () {
 						console.log("Socket.IO: disconnected");
 					});
-					socketConn.on("reconnect", function() {
+					socketConn.on("reconnect", function () {
 						console.log("Socket.IO: reconnected");
-						when(self.assign(), function() {
+						when(self.assign(), function () {
 							for (var i = 0; i < reconnectListeners.length; i++) {
 								reconnectListeners[i]();
 							}
@@ -71,41 +71,41 @@ define(
 				});
 			},
 
-			assign: function() {
-				return when(socket, function(socket) {
+			assign: function () {
+				return when(socket, function (socket) {
 					return request.post(socketApiPrefix + "assign", {
 						headers: {"Content-Type": "application/json"},
 						data: JSON.stringify({session: socket.socket.sessionid})
-					}).then(function() {
+					}).then(function () {
 						console.log("Socket.IO: sessionid " + socket.socket.sessionid + " assigned to user");
 					});
 				});
 			},
 
-			onReconnect: function(listener) {
+			onReconnect: function (listener) {
 				reconnectListeners.push(listener);
 			},
 
-			on: function(eventName, callback) {
+			on: function (eventName, callback) {
 				if (!socket) {
 					callbacks.push([eventName, callback]);
 
 					return;
 				}
-				when(socket, function(socket) {
+				when(socket, function (socket) {
 					console.log("Socket.IO: added listener for " + eventName + " events");
-					socket.on(eventName, function(data) {
+					socket.on(eventName, function (data) {
 						console.debug("Socket.IO: " + eventName + " received");
 						callback(data);
 					});
 				});
 			},
 
-			emit: function(eventName, data) {
+			emit: function (eventName, data) {
 				if (!socket) {
 					return;
 				}
-				when(socket, function(socket) {
+				when(socket, function (socket) {
 					console.debug("Socket.IO: " + eventName + " emitted");
 					socket.emit(eventName, data);
 				});
