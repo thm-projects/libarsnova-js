@@ -338,10 +338,12 @@ define(
 		buildQuestionSortIndex = function () {
 			questionSortIndex = [];
 			for (var questionId in questionMemory.index) {
-				//var question = self.get(questionId);
-				/* Use question.number as soon as the property is set
-				 * by the ARSnova clients. Currently it is always 0. */
-				questionSortIndex.push(questionId);
+				if (questionMemory.index.hasOwnProperty(questionId)) {
+					//var question = self.get(questionId);
+					/* Use question.number as soon as the property is set
+					 * by the ARSnova clients. Currently it is always 0. */
+					questionSortIndex.push(questionId);
+				}
 			}
 		};
 
