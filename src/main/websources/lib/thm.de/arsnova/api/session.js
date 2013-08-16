@@ -50,7 +50,7 @@ define(
 			sessionMemory = new MemoryStore({
 				idProperty: "keyword"
 			}),
-			sessionStore = CacheStore(sessionJsonRest, sessionMemory)
+			sessionStore = new CacheStore(sessionJsonRest, sessionMemory)
 		;
 
 		sessionState.watch("key", function (name, oldValue, value) {
@@ -59,8 +59,8 @@ define(
 		});
 
 		socket.onReconnect(function () {
-			if (null !== session.getKey()) {
-				socket.emit("setSession", {keyword: session.getKey()});
+			if (null !== sessionState.getKey()) {
+				socket.emit("setSession", {keyword: sessionState.getKey()});
 			}
 		});
 
@@ -106,7 +106,7 @@ define(
 				}).then(
 					function (response) {
 						console.log("Session created: " + response._id);
-						sessionState.set(key, response._id);
+						sessionState.set("key", response._id);
 
 						return true;
 					},

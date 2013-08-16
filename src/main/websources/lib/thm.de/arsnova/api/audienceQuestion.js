@@ -45,7 +45,7 @@ define(
 			questionMemory = new MemoryStore({
 				idProperty: "_id"
 			});
-			questionStore = CacheStore(questionJsonRest, questionMemory);
+			questionStore = new CacheStore(questionJsonRest, questionMemory);
 		});
 
 		self = {

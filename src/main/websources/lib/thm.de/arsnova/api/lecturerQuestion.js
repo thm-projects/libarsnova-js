@@ -70,7 +70,7 @@ define(
 			questionMemory = new MemoryStore({
 				idProperty: "_id"
 			});
-			questionStore = CacheStore(questionJsonRest, questionMemory);
+			questionStore = new CacheStore(questionJsonRest, questionMemory);
 			questionState.set("id", null);
 		});
 
@@ -87,7 +87,7 @@ define(
 			ftAnswerMemory = new MemoryStore({
 				idProperty: "_id"
 			});
-			ftAnswerStore = CacheStore(ftAnswerJsonRest, ftAnswerMemory);
+			ftAnswerStore = new CacheStore(ftAnswerJsonRest, ftAnswerMemory);
 
 			/* remove cached answers */
 			answerCountStore = [];
