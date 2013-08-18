@@ -57,7 +57,7 @@ define(
 				checkLoginStatus();
 				if (true === loginError) {
 					console.log("Auth: user is not logged in");
-					if (null != loginType) {
+					if (loginType) {
 						console.log("Auth: user will be redirected to login service");
 						location.href = apiPrefix + "login?type=" + loginType + "&user=" + username;
 					} else {

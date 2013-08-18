@@ -59,7 +59,7 @@ define(
 		});
 
 		socket.onReconnect(function () {
-			if (null != sessionState.getKey()) {
+			if (sessionState.getKey()) {
 				socket.emit("setSession", {keyword: sessionState.getKey()});
 			}
 		});

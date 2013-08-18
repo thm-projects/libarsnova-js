@@ -37,7 +37,7 @@ define(
 
 		self = {
 			connect: function () {
-				if (undefined === io || null != socket) {
+				if (undefined === io || socket) {
 					return;
 				}
 				socket = when(socketUrl, function (socketUrl) {
@@ -87,7 +87,7 @@ define(
 			},
 
 			on: function (eventName, callback) {
-				if (null == socket) {
+				if (!socket) {
 					callbacks.push([eventName, callback]);
 
 					return;
@@ -102,7 +102,7 @@ define(
 			},
 
 			emit: function (eventName, data) {
-				if (null == socket) {
+				if (!socket) {
 					return;
 				}
 				when(socket, function (socket) {
