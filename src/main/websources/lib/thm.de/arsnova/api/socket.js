@@ -37,7 +37,7 @@ define(
 
 		self = {
 			connect: function () {
-				if (undefined === io || socket) {
+				if (!io || socket) {
 					return;
 				}
 				socket = when(socketUrl, function (socketUrl) {
