@@ -2,7 +2,6 @@
 var profile = (function () {
 	"use strict";
 
-	var libPath = "src/main/websources/lib/";
 	var dojoPath = "vendor/dojotoolkit.org/";
 	var versionFilePath = "target/tmp/dojo/version/";
 
@@ -12,6 +11,7 @@ var profile = (function () {
 		mini: true,
 		layerOptimize: "closure",
 		cssOptimize: "comments",
+		selectorEngine: "lite",
 
 		defaultConfig: {
 			async: true,
@@ -43,7 +43,6 @@ var profile = (function () {
 				boot: true,
 				include: [
 					"dojo/dojo", // Dojo loader
-					"dojo/selector/acme", // this module is always needed
 
 					"arsnova-api/audienceQuestion",
 					"arsnova-api/auth",
