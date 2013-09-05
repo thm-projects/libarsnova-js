@@ -85,7 +85,7 @@ define(
 //					},
 
 					thm: {
-						title: "THM (CAS)",
+						title: "Uni",
 						url: string.substitute(
 								"${prefix}login?type=cas&successurl=${success}&failureurl=${failure}",
 								{prefix: apiPrefix, success: successUrl, failure: failureUrl}
