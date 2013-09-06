@@ -72,7 +72,7 @@ define(
 			getServices: function () {
 				var
 					successUrl = encodeURIComponent(location.href),
-					failureUrl = encodeURIComponent(location.href.replace(/#.*/, "#!/auth/error"))
+					failureUrl = encodeURIComponent(location.href.replace(/#.*/, "") + "#!/auth/error")
 				;
 
 				return {
