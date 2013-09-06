@@ -59,7 +59,7 @@ define(
 					console.log("Auth: user is not logged in");
 					if (loginType) {
 						console.log("Auth: user will be redirected to login service");
-						location.href = apiPrefix + "login?type=" + loginType + "&user=" + username;
+						location.href = apiPrefix + "login?type=" + loginType + "&user=" + username + "&role=SPEAKER";
 					} else {
 						console.log("Auth: user cannot be logged in automatically");
 						loginHandler();
@@ -79,7 +79,7 @@ define(
 //					guest: {
 //						title: "Guest login",
 //						url: string.substitute(
-//								"${prefix}login?type=guest&user=Guest&successurl=${success}&failureurl=${failure}",
+//								"${prefix}login?type=guest&role=SPEAKER&user=Guest&successurl=${success}&failureurl=${failure}",
 //								{prefix: apiPrefix, success: successUrl, failure: failureUrl}
 //							)
 //					},
@@ -87,7 +87,7 @@ define(
 					thm: {
 						title: "Uni",
 						url: string.substitute(
-								"${prefix}login?type=cas&successurl=${success}&failureurl=${failure}",
+								"${prefix}login?type=cas&role=SPEAKER&successurl=${success}&failureurl=${failure}",
 								{prefix: apiPrefix, success: successUrl, failure: failureUrl}
 							)
 					},
@@ -95,7 +95,7 @@ define(
 					google: {
 						title: "Google",
 						url: string.substitute(
-								"${prefix}login?type=google&successurl=${success}&failureurl=${failure}",
+								"${prefix}login?type=google&role=SPEAKER&successurl=${success}&failureurl=${failure}",
 								{prefix: apiPrefix, success: successUrl, failure: failureUrl}
 							)
 					},
@@ -103,7 +103,7 @@ define(
 					facebook: {
 						title: "Facebook",
 						url: string.substitute(
-							"${prefix}login?type=facebook&successurl=${success}&failureurl=${failure}",
+							"${prefix}login?type=facebook&role=SPEAKER&successurl=${success}&failureurl=${failure}",
 							{prefix: apiPrefix, success: successUrl, failure: failureUrl}
 						)
 					}
