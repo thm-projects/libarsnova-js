@@ -99,21 +99,15 @@ define(
 				return sessionStore.query({ownedonly: true});
 			},
 
-			createSession: function (shortName, description) {
-				sessionStore.put({
-					name: description,
-					shortName: shortName
-				}).then(
-					function (response) {
-						console.log("Session created: " + response._id);
-						sessionState.set("key", response._id);
+			create: function (session) {
+				return sessionStore.add(session);
+			},
 
-						return true;
-					},
-					function (error) {
-						return false;
-					}
-				);
+			update: function (session) {
+				return sessionStore.update(session, {
+					id: session._id,
+					overwrite: true
+				});
 			},
 
 			watchActiveUserCount: function (callback) {
