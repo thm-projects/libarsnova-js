@@ -148,6 +148,14 @@ define(
 				return questionStore.get(questionId);
 			},
 
+			create: function (question) {
+				question.sessionKeyword = sessionModel.getKey();
+				question.questionVariant = question.questionVariant || "lecture";
+				question.releasedFor = question.releasedFor || "all";
+				question.possibleAnswers = question.possibleAnswers || [];
+				return questionStore.add(question);
+			},
+
 			update: function (question) {
 				return questionStore.put(question, {
 					id: question._id,
