@@ -58,6 +58,8 @@ define(
 			answerCountMemory = [],
 			answerCountStore = [],
 
+			subjects = [],
+
 			/* declarations of private "methods" */
 			buildQuestionSortIndex = null
 		;
@@ -72,6 +74,7 @@ define(
 			});
 			questionStore = new CacheStore(questionJsonRest, questionMemory);
 			questionState.set("id", null);
+			subjects = [];
 		});
 
 		questionState.watch("id", function (name, oldValue, value) {
@@ -132,6 +135,7 @@ define(
 				});
 				questions.then(function () {
 					buildQuestionSortIndex();
+					subject = [];
 					self.setId(questionSortIndex[0]);
 				});
 
@@ -336,6 +340,19 @@ define(
 					question.piRound = 2;
 					return self.update(question);
 				});
+			},
+
+			getSubjects: function () {
+				if (0 === subjects.length) {
+					questionMemory.query().forEach(function (question) {
+						if (-1 === subjects.indexOf(question.subject)) {
+							subjects.push(question.subject);
+						}
+					});
+					subjects.sort();
+				}
+
+				return subjects;
 			},
 
 			onAnswersAvailable: function (callback) {
