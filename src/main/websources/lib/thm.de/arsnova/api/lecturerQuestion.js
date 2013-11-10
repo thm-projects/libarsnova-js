@@ -343,7 +343,7 @@ define(
 			},
 
 			getSubjects: function () {
-				if (0 === subjects.length) {
+				if (0 === subjects.length && questionMemory) {
 					questionMemory.query().forEach(function (question) {
 						if (-1 === subjects.indexOf(question.subject)) {
 							subjects.push(question.subject);
