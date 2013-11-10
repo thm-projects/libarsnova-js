@@ -135,7 +135,7 @@ define(
 				});
 				questions.then(function () {
 					buildQuestionSortIndex();
-					subject = [];
+					subjects = [];
 					self.setId(questionSortIndex[0]);
 				});
 
