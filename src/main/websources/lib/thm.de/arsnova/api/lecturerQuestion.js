@@ -21,6 +21,7 @@ define(
 		"dojo/_base/config",
 		"dojo/_base/declare",
 		"dojo/string",
+		"dojo/Deferred",
 		"dojo/when",
 		"dojo/Stateful",
 		"dojo/store/JsonRest",
@@ -29,7 +30,7 @@ define(
 		"arsnova-api/session",
 		"arsnova-api/socket"
 	],
-	function (config, declare, string, when, Stateful, JsonRestStore, MemoryStore, CacheStore, sessionModel, socket) {
+	function (config, declare, string, Deferred, when, Stateful, JsonRestStore, MemoryStore, CacheStore, sessionModel, socket) {
 		"use strict";
 
 		var
@@ -152,15 +153,42 @@ define(
 				return questionStore.get(questionId);
 			},
 
-			create: function (question) {
+			validate: function (question, noAnswers) {
 				question.sessionKeyword = sessionModel.getKey();
 				question.questionVariant = question.questionVariant || "lecture";
 				question.releasedFor = question.releasedFor || "all";
-				question.possibleAnswers = question.possibleAnswers || [];
+				if (noAnswers || !question.possibleAnswers) {
+					question.possibleAnswers = [];
+				}
+				if (!noAnswers && question.possibleAnswers.length < 2 && "freetext" !== question.questionType
+						|| !question.subject || !question.text || !sessionModel.getKey()) {
+					return null;
+				}
+
+				return question;
+			},
+
+			create: function (question) {
+				question = this.validate(question);
+				if (!question) {
+					var result = new Deferred();
+					result.reject();
+
+					return result;
+				}
+
 				return questionStore.add(question);
 			},
 
 			update: function (question) {
+				question = this.validate(question, true);
+				if (!question) {
+					var result = new Deferred();
+					result.reject();
+
+					return result;
+				}
+
 				return questionStore.put(question, {
 					id: question._id,
 					overwrite: true
