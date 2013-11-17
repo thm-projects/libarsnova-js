@@ -20,13 +20,14 @@ define(
 	[
 		"dojo/_base/config",
 		"dojo/_base/declare",
+		"dojo/Deferred",
 		"dojo/Stateful",
 		"dojo/store/JsonRest",
 		"dojo/store/Memory",
 		"dojo/store/Cache",
 		"arsnova-api/socket"
 	],
-	function (config, declare, Stateful, JsonRestStore, MemoryStore, CacheStore, socket) {
+	function (config, declare, Deferred, Stateful, JsonRestStore, MemoryStore, CacheStore, socket) {
 		"use strict";
 
 		var
@@ -99,11 +100,35 @@ define(
 				return sessionStore.query({ownedonly: true});
 			},
 
+			validate: function (session) {
+				if (!session.name || !session.shortName) {
+					return null;
+				}
+
+				return session;
+			},
+
 			create: function (session) {
+				session = this.validate(session);
+				if (!session) {
+					var result = new Deferred();
+					result.reject();
+
+					return result;
+				}
+
 				return sessionStore.add(session);
 			},
 
 			update: function (session) {
+				session = this.validate(session);
+				if (!session) {
+					var result = new Deferred();
+					result.reject();
+
+					return result;
+				}
+
 				return sessionStore.update(session, {
 					id: session._id,
 					overwrite: true
