@@ -181,7 +181,7 @@ define(
 			},
 
 			update: function (question) {
-				question = this.validate(question, true);
+				question = this.validate(question);
 				if (!question) {
 					var result = new Deferred();
 					result.reject();
