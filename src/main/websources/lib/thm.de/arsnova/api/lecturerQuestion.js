@@ -195,6 +195,10 @@ define(
 				});
 			},
 
+			remove: function (id) {
+				return questionStore.remove(id);
+			},
+
 			next: function () {
 				if (0 === self.getCount()) {
 					console.log("No questions available");
@@ -342,12 +346,26 @@ define(
 			},
 
 			removeAnswer: function (id) {
+				if (!id) {
+					return null;
+				}
 				if (!self.getId()) {
 					console.log("No question selected");
 
 					return null;
 				}
-				ftAnswerStore.remove(id);
+
+				return ftAnswerStore.remove(id);
+			},
+
+			removeAllAnswers: function () {
+				if (!self.getId()) {
+					console.log("No question selected");
+
+					return null;
+				}
+
+				return ftAnswerStore.remove("");
 			},
 
 			updateLocks: function (questionId, lockQuestion, lockStats, lockCorrect) {
