@@ -105,6 +105,11 @@ define(
 					return null;
 				}
 
+				if (session.hasOwnProperty("courseSession")) {
+					/* courseSession may be set in received data but is not accepted by the backend */
+					delete session.courseSession;
+				}
+
 				return session;
 			},
 
@@ -129,10 +134,18 @@ define(
 					return result;
 				}
 
-				return sessionStore.update(session, {
-					id: session._id,
+				return sessionStore.put(session, {
+					id: session.keyword,
 					overwrite: true
 				});
+			},
+
+			remove: function (id) {
+				if (id) {
+					return sessionStore.remove(id);
+				}
+
+				return null;
 			},
 
 			watchActiveUserCount: function (callback) {
