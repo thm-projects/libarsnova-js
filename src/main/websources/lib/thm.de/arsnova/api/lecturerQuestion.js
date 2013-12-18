@@ -60,22 +60,14 @@ define(
 			answerCountStore = [],
 
 			subjects = [],
+			mode = null,
 
 			/* declarations of private "methods" */
 			buildQuestionSortIndex = null
 		;
 
 		sessionModel.watchKey(function (name, oldValue, value) {
-			questionJsonRest = new JsonRestStore({
-				target: apiPrefix,
-				idProperty: "_id"
-			});
-			questionMemory = new MemoryStore({
-				idProperty: "_id"
-			});
-			questionStore = new CacheStore(questionJsonRest, questionMemory);
-			questionState.set("id", null);
-			subjects = [];
+			self.resetState();
 		});
 
 		questionState.watch("id", function (name, oldValue, value) {
@@ -120,8 +112,26 @@ define(
 				}
 			},
 
+			setMode: function (questionMode) {
+				mode = questionMode;
+				self.resetState();
+			},
+
 			getStore: function () {
 				return questionStore;
+			},
+
+			resetState: function () {
+				questionJsonRest = new JsonRestStore({
+					target: apiPrefix,
+					idProperty: "_id"
+				});
+				questionMemory = new MemoryStore({
+					idProperty: "_id"
+				});
+				questionStore = new CacheStore(questionJsonRest, questionMemory);
+				questionState.set("id", null);
+				subjects = [];
 			},
 
 			getAll: function () {
@@ -131,9 +141,13 @@ define(
 					return null;
 				}
 
-				var questions = questionStore.query({
-					sessionkey: sessionModel.getKey()
-				});
+				var params = {sessionkey: sessionModel.getKey()};
+				if ("pi" === mode) {
+					params.lecturequestionsonly = true;
+				} else if ("jitt" === mode) {
+					params.preparationquestionsonly = true;
+				}
+				var questions = questionStore.query(params);
 				questions.then(function () {
 					buildQuestionSortIndex();
 					subjects = [];
