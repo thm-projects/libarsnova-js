@@ -35,8 +35,7 @@ define(
 			checkLoginStatus = function () {
 				request.get(apiPrefix, {sync: true, handleAs: "json"}).then(
 					function (response) {
-						if ("ldap" === response.type) {
-							/* guest login */
+						if ("guest" === response.type) {
 							loginError = true;
 						} else {
 							loginType = response.type;
@@ -84,13 +83,18 @@ define(
 //							)
 //					},
 
-					thm: {
+					custom: {
 						title: "Uni",
-						url: string.substitute(
-								"${prefix}login?type=cas&role=SPEAKER&successurl=${success}&failureurl=${failure}",
-								{prefix: apiPrefix, success: successUrl, failure: failureUrl}
-							)
+						url: config.arsnovaApi.root + "login.html?" + encodeURIComponent(location.pathname)
 					},
+
+//					thm: {
+//						title: "Uni",
+//						url: string.substitute(
+//								"${prefix}login?type=cas&role=SPEAKER&successurl=${success}&failureurl=${failure}",
+//								{prefix: apiPrefix, success: successUrl, failure: failureUrl}
+//							)
+//					},
 
 					google: {
 						title: "Google",
