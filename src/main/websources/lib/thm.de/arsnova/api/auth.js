@@ -31,6 +31,7 @@ define(
 			loginError = false,
 			loginType = null,
 			username = null,
+			services = null,
 
 			checkLoginStatus = function () {
 				request.get(apiPrefix, {sync: true, handleAs: "json"}).then(
@@ -62,6 +63,7 @@ define(
 					} else {
 						console.log("Auth: user cannot be logged in automatically");
 						loginHandler();
+						services = request.get(apiPrefix + "services", {handleAs: "json"});
 					}
 				} else {
 					console.log("Auth: user is already logged in (" + loginType + ")");
@@ -69,50 +71,9 @@ define(
 			},
 
 			getServices: function () {
-				var
-					successUrl = encodeURIComponent(location.href),
-					failureUrl = encodeURIComponent(location.href.replace(/#.*/, "") + "#!/auth/error")
-				;
-
-				return {
-//					guest: {
-//						title: "Guest login",
-//						url: string.substitute(
-//								"${prefix}login?type=guest&role=SPEAKER&user=Guest&successurl=${success}&failureurl=${failure}",
-//								{prefix: apiPrefix, success: successUrl, failure: failureUrl}
-//							)
-//					},
-
-					custom: {
-						title: "Uni",
-						url: config.arsnovaApi.root + "login.html?" + encodeURIComponent(location.pathname)
-					},
-
-//					thm: {
-//						title: "Uni",
-//						url: string.substitute(
-//								"${prefix}login?type=cas&role=SPEAKER&successurl=${success}&failureurl=${failure}",
-//								{prefix: apiPrefix, success: successUrl, failure: failureUrl}
-//							)
-//					},
-
-					google: {
-						title: "Google",
-						url: string.substitute(
-								"${prefix}login?type=google&role=SPEAKER&successurl=${success}&failureurl=${failure}",
-								{prefix: apiPrefix, success: successUrl, failure: failureUrl}
-							)
-					},
-
-					facebook: {
-						title: "Facebook",
-						url: string.substitute(
-							"${prefix}login?type=facebook&role=SPEAKER&successurl=${success}&failureurl=${failure}",
-							{prefix: apiPrefix, success: successUrl, failure: failureUrl}
-						)
-					}
-				};
+				return services;
 			},
+
 			logout: function () {
 				location.href = apiPrefix + "logout";
 			},
