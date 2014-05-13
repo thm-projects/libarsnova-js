@@ -25,14 +25,15 @@ define(
 		"dojo/store/JsonRest",
 		"dojo/store/Memory",
 		"dojo/store/Cache",
+		"arsnova-api/globalConfig",
 		"arsnova-api/socket"
 	],
-	function (config, declare, Deferred, Stateful, JsonRestStore, MemoryStore, CacheStore, socket) {
+	function (config, declare, Deferred, Stateful, JsonRestStore, MemoryStore, CacheStore, globalConfig, socket) {
 		"use strict";
 
 		var
 			self = null,
-			apiPrefix = config.arsnovaApi.root + "session/",
+			apiPrefix = globalConfig.get().apiPath + "/session/",
 
 			SessionState = declare([Stateful], {
 				key: null,

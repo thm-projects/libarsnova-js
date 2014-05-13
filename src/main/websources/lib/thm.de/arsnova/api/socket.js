@@ -18,16 +18,16 @@
  */
 define(
 	[
-		"dojo/_base/config",
 		"dojo/when",
-		"dojo/request"
+		"dojo/request",
+		"arsnova-api/globalConfig",
 	],
-	function (config, when, request) {
+	function (when, request, globalConfig) {
 		"use strict";
 
 		var
 			self = null,
-			socketApiPrefix = config.arsnovaApi.root + "socket/",
+			socketApiPrefix = globalConfig.get().apiPath + "/socket/",
 			socketUrl = request.get(socketApiPrefix + "url"),
 			socket = null,
 			firstConnect = true,

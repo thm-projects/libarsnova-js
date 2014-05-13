@@ -18,7 +18,6 @@
  */
 define(
 	[
-		"dojo/_base/config",
 		"dojo/_base/declare",
 		"dojo/string",
 		"dojo/Deferred",
@@ -27,15 +26,16 @@ define(
 		"dojo/store/JsonRest",
 		"dojo/store/Memory",
 		"dojo/store/Cache",
+		"arsnova-api/globalConfig",
 		"arsnova-api/session",
 		"arsnova-api/socket"
 	],
-	function (config, declare, string, Deferred, when, Stateful, JsonRestStore, MemoryStore, CacheStore, sessionModel, socket) {
+	function (declare, string, Deferred, when, Stateful, JsonRestStore, MemoryStore, CacheStore, globalConfig, sessionModel, socket) {
 		"use strict";
 
 		var
 			self = null,
-			apiPrefix = config.arsnovaApi.root + "lecturerquestion/",
+			apiPrefix = globalConfig.get().apiPath + "/lecturerquestion/",
 			answerPath = apiPrefix + "${questionId}/answer/",
 
 			QuestionState = declare([Stateful], {

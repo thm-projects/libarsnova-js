@@ -18,16 +18,16 @@
  */
 define(
 	[
-		"dojo/_base/config",
 		"dojo/string",
-		"dojo/request"
+		"dojo/request",
+		"arsnova-api/globalConfig"
 	],
-	function (config, string, request) {
+	function (string, request, globalConfig) {
 		"use strict";
 
 		var
 			self = null,
-			apiPrefix = config.arsnovaApi.root + "auth/",
+			apiPrefix = globalConfig.get().apiPath + "/auth/",
 			loginError = false,
 			loginType = null,
 			username = null,

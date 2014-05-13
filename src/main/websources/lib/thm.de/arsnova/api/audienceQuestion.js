@@ -18,19 +18,19 @@
  */
 define(
 	[
-		"dojo/_base/config",
 		"dojo/store/JsonRest",
 		"dojo/store/Memory",
 		"dojo/store/Cache",
+		"arsnova-api/globalConfig",
 		"arsnova-api/session",
 		"arsnova-api/socket"
 	],
-	function (config, JsonRestStore, MemoryStore, CacheStore, sessionModel, socket) {
+	function (JsonRestStore, MemoryStore, CacheStore, globalConfig, sessionModel, socket) {
 		"use strict";
 
 		var
 			self = null,
-			apiPrefix = config.arsnovaApi.root + "audiencequestion/",
+			apiPrefix = globalConfig.get().apiPath + "/audiencequestion/",
 
 			questionJsonRest = null,
 			questionMemory = null,
