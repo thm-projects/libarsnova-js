@@ -33,7 +33,7 @@ define(
 
 		request.get(configPath, {sync: true, handleAs: "json"}).then(function (data) {
 			globalConfig = data;
-			apiPrefix = globalConfig.apiPath + "/configuration/";
+			apiPrefix = globalConfig.apiPath + "/arsnova-config";
 		});
 
 		self = {
