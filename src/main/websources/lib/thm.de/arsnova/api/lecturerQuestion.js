@@ -159,6 +159,9 @@ define(
 			},
 
 			remove: function (id) {
+				if (!id) {
+					return null;
+				}
 				return questionStore.remove(id);
 			},
 
