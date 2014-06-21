@@ -41,9 +41,9 @@ define(
 			questionJsonRest = null,
 			questionMemory = null,
 			questionStore = null,
-			questionSortIndex = null,
-			questionSortIndexPi = null,
-			questionSortIndexJitt = null,
+			questionSortIndex = [],
+			questionSortIndexPi = [],
+			questionSortIndexJitt = [],
 
 			ftAnswerJsonRest = null,
 			ftAnswerMemory = null,
