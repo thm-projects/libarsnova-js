@@ -4,3 +4,6 @@
 [submodule "vendor/dojotoolkit.org/util"]
 	path = vendor/dojotoolkit.org/util
 	url = https://github.com/dojo/util.git
+[submodule "vendor/sitepen.com/dstore"]
+	path = vendor/sitepen.com/dstore
+	url = https://github.com/SitePen/dstore.git

@@ -17,7 +17,8 @@ var profile = (function () {
 			async: true,
 			baseUrl: "app/",
 			paths: {
-				"dojo": "../lib/dojotoolkit.org/dojo"
+				"dojo": "../lib/dojotoolkit.org/dojo",
+				"dstore": "../lib/sitepen.com/dstore"
 			}
 		},
 
@@ -25,6 +26,10 @@ var profile = (function () {
 			{
 				name: "dojo",
 				location: dojoPath + "dojo"
+			},
+			{
+				name: "dstore",
+				location: "vendor/sitepen.com/dstore"
 			},
 			{
 				name: "arsnova-api",

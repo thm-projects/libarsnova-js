@@ -18,34 +18,31 @@
  */
 define(
 	[
-		"dojo/store/JsonRest",
-		"dojo/store/Memory",
-		"dojo/store/Cache",
+		"dojo/_base/declare",
+		"arsnova-api/store/RestQueryCache",
 		"arsnova-api/globalConfig",
 		"arsnova-api/session",
-		"arsnova-api/socket"
+		"arsnova-api/socket",
+		"arsnova-api/model/AudienceQuestion",
+		"arsnova-api/model/audienceQuestionPropertyMap"
 	],
-	function (JsonRestStore, MemoryStore, CacheStore, globalConfig, sessionModel, socket) {
+	function (declare, RestQueryCache, globalConfig, sessionModel, socket, AudienceQuestion, audienceQuestionPropertyMap) {
 		"use strict";
 
 		var
 			self = null,
 			apiPrefix = globalConfig.get().apiPath + "/audiencequestion/",
 
-			questionJsonRest = null,
-			questionMemory = null,
+			AudienceQuestionStore = declare(RestQueryCache, {
+				target: apiPrefix,
+				model: AudienceQuestion,
+				propertyMap: audienceQuestionPropertyMap
+			}),
 			questionStore = null
 		;
 
 		sessionModel.watchKey(function (name, oldValue, value) {
-			questionJsonRest = new JsonRestStore({
-				target: apiPrefix,
-				idProperty: "_id"
-			});
-			questionMemory = new MemoryStore({
-				idProperty: "_id"
-			});
-			questionStore = new CacheStore(questionJsonRest, questionMemory);
+			questionStore = new AudienceQuestionStore();
 		});
 
 		self = {
@@ -54,16 +51,16 @@ define(
 			},
 
 			getAll: function () {
-				return questionStore.query({
+				return questionStore.filter({
 					sessionkey: sessionModel.getKey()
-				});
+				}).fetch();
 			},
 
 			get: function (id) {
 				var question = questionStore.get(id);
-				if (!question.text) {
+				if (!question.body) {
 					/* force reloading of question */
-					questionMemory.remove(id);
+					questionStore.cachingStore.remove(id);
 					question = questionStore.get(id);
 				}
 

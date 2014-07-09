@@ -23,14 +23,18 @@ define(
 		"dojo/Deferred",
 		"dojo/when",
 		"dojo/Stateful",
-		"dojo/store/JsonRest",
-		"dojo/store/Memory",
-		"dojo/store/Cache",
+		"arsnova-api/store/RestQueryCache",
 		"arsnova-api/globalConfig",
 		"arsnova-api/session",
-		"arsnova-api/socket"
+		"arsnova-api/socket",
+		"arsnova-api/model/LecturerQuestion",
+		"arsnova-api/model/lecturerQuestionPropertyMap",
+		"arsnova-api/model/AnswerChoiceSummary",
+		"arsnova-api/model/answerChoiceSummaryPropertyMap",
+		"arsnova-api/model/AnswerText",
+		"arsnova-api/model/answerTextPropertyMap"
 	],
-	function (declare, string, Deferred, when, Stateful, JsonRestStore, MemoryStore, CacheStore, globalConfig, sessionModel, socket) {
+	function (declare, string, Deferred, when, Stateful, RestQueryCache, globalConfig, sessionModel, socket, LecturerQuestion, lecturerQuestionPropertyMap, AnswerChoiceSummary, answerChoiceSummaryPropertyMap, AnswerText, answerTextPropertyMap) {
 		"use strict";
 
 		var
@@ -38,19 +42,14 @@ define(
 			apiPrefix = globalConfig.get().apiPath + "/lecturerquestion/",
 			answerPath = apiPrefix + "${questionId}/answer/",
 
-			questionJsonRest = null,
-			questionMemory = null,
 			questionStore = null,
+			questionCache = null,
 			questionSortIndex = [],
 			questionSortIndexPi = [],
 			questionSortIndexJitt = [],
 
-			ftAnswerJsonRest = null,
-			ftAnswerMemory = null,
 			ftAnswerStore = null,
 
-			answerCountJsonRest = [],
-			answerCountMemory = [],
 			answerCountStore = [],
 			answerCountQuestionId = null,
 
@@ -58,7 +57,13 @@ define(
 
 			/* declarations of private "methods" */
 			buildQuestionSortIndex = null,
-			setupAnswerStore
+			setupAnswerStore,
+
+			LecturerQuestionStore = declare(RestQueryCache, {
+				target: apiPrefix,
+				model: LecturerQuestion,
+				propertyMap: lecturerQuestionPropertyMap
+			})
 		;
 
 		sessionModel.watchKey(function (name, oldValue, value) {
@@ -78,15 +83,12 @@ define(
 				return questionStore;
 			},
 
+			getCache: function () {
+				return questionCache;
+			},
+
 			resetState: function () {
-				questionJsonRest = new JsonRestStore({
-					target: apiPrefix,
-					idProperty: "_id"
-				});
-				questionMemory = new MemoryStore({
-					idProperty: "_id"
-				});
-				questionStore = new CacheStore(questionJsonRest, questionMemory);
+				questionStore = new LecturerQuestionStore();
 				subjects = [];
 			},
 
@@ -103,13 +105,15 @@ define(
 				} else if ("jitt" === type) {
 					params.preparationquestionsonly = true;
 				}
-				var questions = questionStore.query(params);
-				questions.then(function () {
-					buildQuestionSortIndex();
+//				var questions = questionStore.query(params);
+				var questions = questionStore.filter(params);
+				questionCache = questions.fetch();
+				questionCache.then(function (questions) {
 					subjects = [];
+					buildQuestionSortIndex(questions);
 				});
 
-				return questions;
+				return questionCache;
 			},
 
 			get: function (questionId) {
@@ -117,14 +121,12 @@ define(
 			},
 
 			validate: function (question, noAnswers) {
-				question.sessionKeyword = sessionModel.getKey();
-				question.questionVariant = question.questionVariant || "lecture";
-				question.releasedFor = question.releasedFor || "all";
-				if (noAnswers || !question.possibleAnswers) {
-					question.possibleAnswers = [];
+				question.sessionId = sessionModel.getKey();
+				if (noAnswers || !question.answerOptions) {
+					question.answerOptions = [];
 				}
-				if (!noAnswers && question.possibleAnswers.length < 2 && "freetext" !== question.questionType
-						|| !question.subject || !question.text || !sessionModel.getKey()) {
+				if (!noAnswers && question.answerOptions.length < 2 && "freetext" !== question.format
+						|| !question.subject || !question.body || !sessionModel.getKey()) {
 					return null;
 				}
 
@@ -153,7 +155,7 @@ define(
 				}
 
 				return questionStore.put(question, {
-					id: question._id,
+					id: question.id,
 					overwrite: true
 				});
 			},
@@ -248,13 +250,13 @@ define(
 					return null;
 				}
 
-				return questionStore.query({
+				return questionStore.filter({
 					sessionkey: sessionModel.getKey(),
 					filter: "unanswered"
-				});
+				}).fetch();
 			},
 
-			getAnswers: function (questionId, piRound, refresh) {
+			getAnswers: function (questionId, round, refresh) {
 				if (questionId !== answerCountQuestionId) {
 					setupAnswerStore(questionId);
 					answerCountQuestionId = questionId;
@@ -262,32 +264,29 @@ define(
 				var question = self.get(questionId);
 
 				return when(question, function (question) {
-					if ("freetext" === question.questionType) {
-						if (!refresh && ftAnswerMemory.data.length > 0) {
-							return ftAnswerMemory.query();
+					if ("freetext" === question.format) {
+						if (!refresh && ftAnswerStore.cachingStore.data.length > 0) {
+							return ftAnswerStore.cachingStore.fetch();
 						}
 
-						return ftAnswerStore.query();
+						return ftAnswerStore.fetch();
 					}
 
-					if (undefined === piRound || piRound < 1 || piRound > 2) {
-						piRound = question.piRound;
+					if (undefined === round || round < 1 || round > 2) {
+						round = question.round;
 					}
 
-					if (refresh || !answerCountStore[piRound]) {
-						answerCountJsonRest[piRound] = new JsonRestStore({
-							target: string.substitute(answerPath, {questionId: question._id}),
-							idProperty: "answerText"
+					if (refresh || !answerCountStore[round]) {
+						answerCountStore[round] = new RestQueryCache({
+							target: string.substitute(answerPath, {questionId: question.id}),
+							model: AnswerChoiceSummary,
+							propertyMap: answerChoiceSummaryPropertyMap
 						});
-						answerCountMemory[piRound] = new MemoryStore({
-							idProperty: "answerText"
-						});
-						answerCountStore[piRound] = new CacheStore(answerCountJsonRest[piRound], answerCountMemory[piRound]);
 
-						return answerCountStore[piRound].query({piround: piRound});
+						return answerCountStore[round].filter({round: round}).fetch();
 					}
 
-					return answerCountMemory[piRound].query();
+					return answerCountStore[round].cachingStore.fetch();
 				});
 			},
 
@@ -320,8 +319,8 @@ define(
 
 				return when(question, function (question) {
 					question.active = !lockQuestion;
-					question.showStatistic = !lockStats;
-					question.showAnswer = !lockCorrect;
+					question.publishResults = !lockStats;
+					question.publishCorrectAnswer = !lockCorrect;
 
 					return self.update(question);
 				});
@@ -330,14 +329,14 @@ define(
 			startSecondPiRound: function (questionId) {
 				var question = self.get(questionId);
 				return when(question, function (question) {
-					question.piRound = 2;
+					question.round = 2;
 					return self.update(question);
 				});
 			},
 
 			getSubjects: function () {
-				if (0 === subjects.length && questionMemory) {
-					questionMemory.query().forEach(function (question) {
+				if (0 === subjects.length && questionStore) {
+					questionCache.forEach(function (question) {
 						if (-1 === subjects.indexOf(question.subject)) {
 							subjects.push(question.subject);
 						}
@@ -353,11 +352,10 @@ define(
 			}
 		};
 
-		buildQuestionSortIndex = function () {
+		buildQuestionSortIndex = function (questions) {
 			questionSortIndex = [];
 			questionSortIndexPi = [];
 			questionSortIndexJitt = [];
-			var questions = questionMemory.query();
 
 			questions.sort(function (q1, q2) {
 				var r = q1.subject.localeCompare(q2.subject);
@@ -365,32 +363,29 @@ define(
 					r = q1.number - q2.number;
 				}
 				if (0 === r) {
-					r = q1.text.localeCompare(q2.text);
+					r = q1.body.localeCompare(q2.body);
 				}
 
 				return r;
 			});
 
 			questions.forEach(function (question) {
-				questionSortIndex.push(question._id);
-				if ("lecture" === question.questionVariant) {
-					questionSortIndexPi.push(question._id);
+				questionSortIndex.push(question.id);
+				if ("lecture" === question.type) {
+					questionSortIndexPi.push(question.id);
 				}
-				if ("preparation" === question.questionVariant) {
-					questionSortIndexJitt.push(question._id);
+				if ("preparation" === question.type) {
+					questionSortIndexJitt.push(question.id);
 				}
 			});
 		};
 
 		setupAnswerStore = function (questionId) {
-			ftAnswerJsonRest = new JsonRestStore({
+			ftAnswerStore = new RestQueryCache({
 				target: string.substitute(answerPath, {questionId: questionId}),
-				idProperty: "_id"
+				model: AnswerText,
+				propertyMap: answerTextPropertyMap
 			});
-			ftAnswerMemory = new MemoryStore({
-				idProperty: "_id"
-			});
-			ftAnswerStore = new CacheStore(ftAnswerJsonRest, ftAnswerMemory);
 
 			/* remove cached answers */
 			answerCountStore = [];
