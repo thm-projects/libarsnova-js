@@ -27,13 +27,11 @@ define(
 		var
 			self = null,
 			configPath = config.arsnovaApi.configPath,
-			apiPrefix = null,
 			globalConfig = null
 		;
 
 		request.get(configPath, {sync: true, handleAs: "json"}).then(function (data) {
 			globalConfig = data;
-			apiPrefix = globalConfig.apiPath + "/arsnova-config";
 		});
 
 		self = {
