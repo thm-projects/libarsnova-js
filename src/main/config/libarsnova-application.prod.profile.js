@@ -19,6 +19,9 @@ var profile = (function () {
 			baseUrl: "app/",
 			paths: {
 				"dojo": "../lib/dojotoolkit.org/dojo"
+			},
+			hasCache: {
+				"config-selectorEngine": "lite"
 			}
 		},
 
@@ -32,18 +35,18 @@ var profile = (function () {
 				location: "src/main/websources/lib/thm.de/arsnova/api"
 			},
 			{
-				name: "version",
+				name: "arsnova-api-version",
 				location: versionFilePath,
 				main: "version"
 			}
 		],
 
 		layers: {
-			"app/libarsnova": {
+			"dojo/dojo": {
 				customBase: true, // do not add dojo/main automatically
 				boot: true,
 				include: [
-					"dojo/dojo", // Dojo loader
+					"dojo/request/xhr",
 
 					"arsnova-api/audienceQuestion",
 					"arsnova-api/auth",
@@ -52,7 +55,7 @@ var profile = (function () {
 					"arsnova-api/session",
 					"arsnova-api/socket",
 
-					"version"
+					"arsnova-api-version"
 				]
 			}
 		},
@@ -62,18 +65,22 @@ var profile = (function () {
 			 * and further decrease file size of the build */
 			"config-deferredInstrumentation": 0,
 			"config-dojo-loader-catches": 0,
+			"config-stripStrict": 0,
 			"config-tlmSiblingOfDojo": 1,
 			"dojo-amd-factory-scan": 0,
+			"dojo-built": 1,
+			"dojo-cdn": 0,
 			"dojo-combo-api": 0,
 			"dojo-config-api": 1,
 			"dojo-config-require": 0,
 			"dojo-debug-messages": 0,
-			"dojo-dom-ready-api": 1,
+			"dojo-dom-ready-api": 0,
 			"dojo-firebug": 0,
 			"dojo-guarantee-console": 0,
 			"dojo-has-api": 1,
 			"dojo-inject-api": 1,
 			"dojo-loader": 0,
+			"dojo-loader-eval-hint-url": 1,
 			"dojo-log-api": 0,
 			"dojo-modulePaths": 0,
 			"dojo-moduleUrl": 0,
@@ -85,11 +92,25 @@ var profile = (function () {
 			"dojo-timeout-api": 0,
 			"dojo-trace-api": 0,
 			"dojo-undef-api": 0,
-			"dojo-v1x-i18n-Api": 1,
+			"dojo-v1x-i18n-Api": 0,
 			"dojo-xhr-factory": 0,
-			"dom": 1,
-			"extend-dojo": 1,
-			"host-browser": 1
+			"dom": 0,
+			"extend-dojo": 0,
+			"host-browser": 1,
+			"host-node": 0,
+			"host-rhino": 0,
+
+			/* There is no UI in libarsnova so touch support can be removed */
+			"touch": 0,
+
+			/* Legacy browsers are not supported so remove unnecessary code */
+			"activex": 0,
+			"dojo-force-activex-xhr": 0,
+			"dom-addeventlistener": 1,
+			"ie-event-behavior": 0,
+			"json-parse": 1,
+			"json-stringify": 1,
+			"quirks": 0
 		}
 	};
 }());
