@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<title>libarsnova-js example</title>
+</head>
+
+<body>
+<h1>libarsnova-js example</h1>
+<p>See console for output.</p>
+<script>
+var dojoConfig = {
+	arsnovaApi: {
+		configPath: "/arsnova-config"
+	}
+};
+</script>
+<script src="libarsnova.js"></script>
+<script>
+require(
+	[
+		"arsnova-api-version",
+		"arsnova-api/globalConfig",
+		"arsnova-api/auth"
+	],
+	function (version, globalConfig, auth) {
+		console.log("version", version);
+		console.log("globalConfig", globalConfig.get());
+		console.log("services", auth.getServices());
+	}
+);
+</script>
+</body>
+</html>
