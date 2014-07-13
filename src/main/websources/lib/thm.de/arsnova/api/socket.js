@@ -75,9 +75,9 @@ define(
 				return when(socket, function (socket) {
 					return request.post(socketApiPrefix + "assign", {
 						headers: {"Content-Type": "application/json"},
-						data: JSON.stringify({session: socket.socket.sessionid})
+						data: JSON.stringify({session: socket.io.engine.id})
 					}).then(function () {
-						console.log("Socket.IO: sessionid " + socket.socket.sessionid + " assigned to user");
+						console.log("Socket.IO: sessionid " + socket.io.engine.id + " assigned to user");
 					});
 				});
 			},
