@@ -20,9 +20,10 @@ define(
 	[
 		"dojo/string",
 		"dojo/request",
+		"dojo/Deferred",
 		"arsnova-api/globalConfig"
 	],
-	function (string, request, globalConfig) {
+	function (string, request, Deferred, globalConfig) {
 		"use strict";
 
 		var
@@ -31,7 +32,7 @@ define(
 			loginError = false,
 			loginType = null,
 			username = null,
-			services = null,
+			servicesDfd = null,
 
 			checkLoginStatus = function () {
 				request.get(apiPrefix, {sync: true, handleAs: "json"}).then(
@@ -63,7 +64,21 @@ define(
 					} else {
 						console.log("Auth: user cannot be logged in automatically");
 						loginHandler();
-						services = request.get(apiPrefix + "services", {handleAs: "json"});
+						servicesDfd = new Deferred();
+						var services = request.get(apiPrefix + "services", {handleAs: "json"});
+						services.then(function (services) {
+							services.sort(function (a, b) {
+								if (a.order > 0 && (a.order < b.order || b.order <= 0)) {
+									return -1;
+								}
+								if (b.order > 0 && (a.order > b.order || a.order <= 0)) {
+									return 1;
+								}
+
+								return 0;
+							});
+							servicesDfd.resolve(services);
+						});
 					}
 				} else {
 					console.log("Auth: user is already logged in (" + loginType + ")");
@@ -71,7 +86,7 @@ define(
 			},
 
 			getServices: function () {
-				return services;
+				return servicesDfd;
 			},
 
 			logout: function () {
