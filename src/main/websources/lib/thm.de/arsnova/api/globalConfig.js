@@ -26,7 +26,7 @@ define(
 
 		var
 			self = null,
-			configPath = config.arsnovaApi.configPath,
+			configPath = config.arsnovaApi ? config.arsnovaApi.configPath : "/arsnova-config",
 			globalConfig = null
 		;
 
