@@ -32,7 +32,13 @@ define(
 			socket = null,
 			firstConnect = true,
 			callbacks = [],
-			reconnectListeners = []
+			reconnectListeners = [],
+			latencyUpdateListeners = [],
+			pingSentTime = 0,
+			pingTimeoutHandle = null,
+
+			/* private methods */
+			setupLatencyCheck = null
 		;
 
 		self = {
@@ -54,6 +60,7 @@ define(
 							self.on(callbacks[i][0], callbacks[i][1]);
 						}
 						callbacks = [];
+						setupLatencyCheck(socketConn.io.engine);
 					});
 					socketConn.on("disconnect", function () {
 						console.log("Socket.IO: disconnected");
@@ -65,6 +72,7 @@ define(
 								reconnectListeners[i]();
 							}
 						});
+						setupLatencyCheck(socketConn.io.engine);
 					});
 
 					return socketConn;
@@ -75,15 +83,19 @@ define(
 				return when(socket, function (socket) {
 					return request.post(socketApiPrefix + "assign", {
 						headers: {"Content-Type": "application/json"},
-						data: JSON.stringify({session: socket.socket.sessionid})
+						data: JSON.stringify({session: socket.io.engine.id})
 					}).then(function () {
-						console.log("Socket.IO: sessionid " + socket.socket.sessionid + " assigned to user");
+						console.log("Socket.IO: sessionid " + socket.io.engine.id + " assigned to user");
 					});
 				});
 			},
 
 			onReconnect: function (listener) {
 				reconnectListeners.push(listener);
+			},
+
+			onLatencyUpdate: function (listener) {
+				latencyUpdateListeners.push(listener);
 			},
 
 			on: function (eventName, callback) {
@@ -110,6 +122,34 @@ define(
 					socket.emit(eventName, data);
 				});
 			}
+		};
+
+		setupLatencyCheck = function (eio) {
+			var ping = eio.ping;
+			eio.ping = function () {
+				console.debug("PING");
+				ping.call(eio);
+				pingSentTime = Date.now();
+				pingTimeoutHandle = setTimeout(function () {
+					var latency = -1;
+					console.log("Socket.IO: high latency (> 5000ms)");
+					latencyUpdateListeners.forEach(function (listener) {
+						listener(latency);
+					});
+				}, 5000);
+			};
+			eio.on("heartbeat", function () {
+				console.debug("PONG");
+				if (pingSentTime > 0) {
+					clearTimeout(pingTimeoutHandle);
+					var latency = Date.now() - pingSentTime;
+					console.debug("Socket.IO: latency is " + latency + "ms");
+					latencyUpdateListeners.forEach(function (listener) {
+						listener(latency);
+					});
+				}
+				pingSentTime = 0;
+			});
 		};
 
 		return self;
