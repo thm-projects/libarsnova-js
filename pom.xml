@@ -62,8 +62,8 @@
 
 	<scm>
 		<url>https://github.com/thm-projects/arsnova-presenter</url>
-		<connection>scm:https://github.com/thm-projects/arsnova-presenter.git</connection>
-		<developerConnection>scm:ssh://gitorious@scm.thm.de:arsnova/libarsnova-js.git</developerConnection>
+		<connection>scm:git:https://github.com/thm-projects/arsnova-presenter.git</connection>
+		<developerConnection>scm:git:ssh://gitorious@scm.thm.de:arsnova/libarsnova-js.git</developerConnection>
 	</scm>
 
 	<issueManagement>
