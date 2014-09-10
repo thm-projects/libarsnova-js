@@ -8,7 +8,7 @@
 	<packaging>war</packaging>
 	<name>libarsnova-js</name>
 	<description>libarsnova-js is a client library for JavaScript applications handling the communication (REST and Socket.IO) with the ARSnova backend.</description>
-	<url>http://blog.mni.thm.de/arsnova/arsnova-blog/</url>
+	<url>http://link.audience-response.org/libarsnova-js-website</url>
 	<inceptionYear>2013</inceptionYear>
 
 	<developers>
@@ -30,7 +30,7 @@
 				<role>developer</role>
 			</roles>
 			<url>http://www.dgerhardt.net</url>
-			<email>anp-dev@z.dgerhardt.net</email>
+			<email>code@dgerhardt.net</email>
 		</developer>
 	</developers>
 
@@ -61,8 +61,8 @@
 	</repositories>
 
 	<scm>
-		<url>https://scm.thm.de/arsnova/libarsnova-js</url>
-		<connection>scm:git://scm.thm.de/arsnova/libarsnova-js.git</connection>
+		<url>https://github.com/thm-projects/arsnova-presenter</url>
+		<connection>scm:https://github.com/thm-projects/arsnova-presenter.git</connection>
 		<developerConnection>scm:ssh://gitorious@scm.thm.de:arsnova/libarsnova-js.git</developerConnection>
 	</scm>
 
@@ -73,7 +73,7 @@
 
 	<ciManagement>
 		<system>Jenkins</system>
-		<url>https://jenkins.mni.thm.de/jenkins/job/ARSnova-lib-js.master/</url>
+		<url>https://jenkins.mni.thm.de/jenkins/job/ARSnova-libarsnova-js.master/</url>
 	</ciManagement>
 
 	<build>
