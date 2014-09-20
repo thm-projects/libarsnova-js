@@ -21,13 +21,13 @@ define(
 		"dojo/_base/declare",
 		"dojo/Deferred",
 		"dojo/Stateful",
-		"dojo/store/JsonRest",
-		"dojo/store/Memory",
-		"dojo/store/Cache",
+		"arsnova-api/store/RestQueryCache",
 		"arsnova-api/globalConfig",
-		"arsnova-api/socket"
+		"arsnova-api/socket",
+		"arsnova-api/model/Session",
+		"arsnova-api/model/sessionPropertyMap"
 	],
-	function (config, declare, Deferred, Stateful, JsonRestStore, MemoryStore, CacheStore, globalConfig, socket) {
+	function (config, declare, Deferred, Stateful, RestQueryCache, globalConfig, socket, Session, sessionPropertyMap) {
 		"use strict";
 
 		var
@@ -44,14 +44,11 @@ define(
 				activeUserCount: "-"
 			}),
 
-			sessionJsonRest = new JsonRestStore({
+			sessionStore = new RestQueryCache({
 				target: apiPrefix,
-				idProperty: "keyword"
-			}),
-			sessionMemory = new MemoryStore({
-				idProperty: "keyword"
-			}),
-			sessionStore = new CacheStore(sessionJsonRest, sessionMemory)
+				model: Session,
+				propertyMap: sessionPropertyMap
+			})
 		;
 
 		sessionState.watch("key", function (name, oldValue, value) {
@@ -93,11 +90,11 @@ define(
 			},
 
 			getVisited: function () {
-				return sessionStore.query({visitedonly: true});
+				return sessionStore.filter({visitedonly: true}).fetch();
 			},
 
 			getOwned: function () {
-				return sessionStore.query({ownedonly: true});
+				return sessionStore.filter({ownedonly: true}).fetch();
 			},
 
 			validate: function (session) {
@@ -135,7 +132,7 @@ define(
 				}
 
 				return sessionStore.put(session, {
-					id: session.keyword,
+					id: session.id,
 					overwrite: true
 				});
 			},
