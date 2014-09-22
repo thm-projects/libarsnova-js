@@ -1,16 +1,48 @@
 {
-	"name": "libarsnova-js",
-	"dojoBuild": "libarsnova.profile.js",
-	"contributors": [
-		{
-			"name": "Daniel Gerhardt",
-			"email": "anp-dev@z.dgerhardt.net"
-		}
+	"name": "libarsnova",
+	"version": "1.0.0-alpha",
+	"description": "libarsnova is a client library for the Audience Response System ARSnova which transparently handles communication with the backend API.",
+	"author": {
+		"name": "Daniel Gerhardt",
+		"email": "code@dgerhardt.net",
+		"url": "http://dgerhardt.net"
+	},
+	"license": "LGPL-3.0+",
+	"keywords": [
+		"arsnova",
+		"education",
+		"classroom",
+		"audience",
+		"response",
+		"system",
+		"feedback",
+		"voting",
+		"survey",
+		"poll",
+		"question",
+		"peer",
+		"instruction",
+		"rest",
+		"websocket"
 	],
-	"licenses": [
-		{
-			"type": "LGPLv3",
-			"url": "http://www.gnu.org/licenses/lgpl.html"
-		}
-	]
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/thm-projects/libarsnova-js.git"
+	},
+	"directories": {
+		"lib": "src",
+		"example": "examples"
+	},
+	"devDependencies": {
+		"bower": "~1",
+		"grunt": "~0.4.5",
+		"grunt-amd-build": "~0.7.6",
+		"grunt-contrib-clean": "0.6",
+		"grunt-contrib-copy": "0.6",
+		"grunt-contrib-jshint": "0.10",
+		"grunt-contrib-uglify": "0.6",
+		"grunt-shell": "0.7",
+		"intern": "2.1"
+	},
+	"dojoBuild": "src/libarsnova.profile.js"
 }
