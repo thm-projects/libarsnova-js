@@ -1,12 +1,8 @@
-/* Dojo application profile for production */
 var profile = (function () {
 	"use strict";
 
-	var dojoPath = "vendor/dojotoolkit.org/";
-	var versionFilePath = "target/tmp/dojo/version/";
-
 	return {
-		basePath: "../../..",
+		basePath: "./",
 		action: "release",
 		mini: true,
 		layerOptimize: "closure",
@@ -16,11 +12,7 @@ var profile = (function () {
 
 		defaultConfig: {
 			async: true,
-			baseUrl: "app/",
-			paths: {
-				"dojo": "../lib/dojotoolkit.org/dojo",
-				"dstore": "../lib/sitepen.com/dstore"
-			},
+			baseUrl: "src",
 			hasCache: {
 				"config-selectorEngine": "lite"
 			}
@@ -29,38 +21,31 @@ var profile = (function () {
 		packages: [
 			{
 				name: "dojo",
-				location: dojoPath + "dojo"
+				location: "vendor/dojotoolkit.org/dojo"
 			},
 			{
 				name: "dstore",
 				location: "vendor/sitepen.com/dstore"
-			},
-			{
-				name: "arsnova-api",
-				location: "src/main/websources/lib/thm.de/arsnova/api"
-			},
-			{
-				name: "arsnova-api-version",
-				location: versionFilePath,
-				main: "version"
 			}
 		],
 
 		layers: {
-			"dojo/dojo": {
+			"dojo/dojo":{
+				customBase: true,
+				include: []
+			},
+			"libarsnova/libarsnova": {
 				customBase: true, // do not add dojo/main automatically
 				boot: true,
 				include: [
 					"dojo/request/xhr",
 
-					"arsnova-api/audienceQuestion",
-					"arsnova-api/auth",
-					"arsnova-api/feedback",
-					"arsnova-api/lecturerQuestion",
-					"arsnova-api/session",
-					"arsnova-api/socket",
-
-					"arsnova-api-version"
+					"libarsnova/audienceQuestion",
+					"libarsnova/auth",
+					"libarsnova/feedback",
+					"libarsnova/lecturerQuestion",
+					"libarsnova/session",
+					"libarsnova/socket"
 				]
 			}
 		},

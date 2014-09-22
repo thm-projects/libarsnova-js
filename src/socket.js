@@ -19,7 +19,7 @@ define(
 	[
 		"dojo/when",
 		"dojo/request",
-		"arsnova-api/globalConfig"
+		"libarsnova/globalConfig"
 	],
 	function (when, request, globalConfig) {
 		"use strict";

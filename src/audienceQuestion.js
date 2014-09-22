@@ -18,12 +18,12 @@
 define(
 	[
 		"dojo/_base/declare",
-		"arsnova-api/store/RestQueryCache",
-		"arsnova-api/globalConfig",
-		"arsnova-api/session",
-		"arsnova-api/socket",
-		"arsnova-api/model/AudienceQuestion",
-		"arsnova-api/model/audienceQuestionPropertyMap"
+		"libarsnova/store/RestQueryCache",
+		"libarsnova/globalConfig",
+		"libarsnova/session",
+		"libarsnova/socket",
+		"libarsnova/model/AudienceQuestion",
+		"libarsnova/model/audienceQuestionPropertyMap"
 	],
 	function (declare, RestQueryCache, globalConfig, sessionModel, socket, AudienceQuestion, audienceQuestionPropertyMap) {
 		"use strict";

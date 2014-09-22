@@ -37,7 +37,7 @@ module.exports = function (grunt) {
 					location: "vendor/sitepen.com/dstore"
 				},
 				{
-					name: "arsnova-api",
+					name: "libarsnova",
 					location: "src"
 				}
 			]
@@ -59,12 +59,12 @@ module.exports = function (grunt) {
 					"dojo/request/xhr",
 					"dojo/selector/_loader",
 
-					"arsnova-api/audienceQuestion",
-					"arsnova-api/auth",
-					"arsnova-api/feedback",
-					"arsnova-api/lecturerQuestion",
-					"arsnova-api/session",
-					"arsnova-api/socket"
+					"libarsnova/audienceQuestion",
+					"libarsnova/auth",
+					"libarsnova/feedback",
+					"libarsnova/lecturerQuestion",
+					"libarsnova/session",
+					"libarsnova/socket"
 				],
 				includeShallow: [
 					// Only the modules listed here (ie. NOT their dependencies) will be added to the layer.
@@ -85,7 +85,7 @@ module.exports = function (grunt) {
 		dojo: {
 			dist: {
 				options: {
-					dojo: "build/tmp/dojo/dojo.js",
+					dojo: "build/dojo/dojo.js",
 					profile: "build.profile.js",
 					package: ".",
 					releaseDir: "build/tmp"
@@ -107,6 +107,13 @@ module.exports = function (grunt) {
 				src: "<%= " + outprop + ".plugins.rel %>",
 				dest: outdir,
 				dot: true
+			},
+			dojo: {
+				expand: true,
+				flatten: true,
+				cwd: tmpdir,
+				src: ["libarsnova/libarsnova.{js,js.map}", "build-report.txt"],
+				dest: outdir
 			}
 		},
 
@@ -115,11 +122,11 @@ module.exports = function (grunt) {
 				files: [
 					{
 						src: "bower_components/dojo",
-						dest: "build/tmp/dojo"
+						dest: "build/dojo"
 					},
 					{
 						src: "node_modules/dojo-util",
-						dest: "build/tmp/util"
+						dest: "build/util"
 					}
 				]
 			}
@@ -182,6 +189,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-shell");
 
 	grunt.registerTask("build-requirejs", ["clean", "jshint", "shell:bowerdeps", "amdbuild:amdloader", "amdreportjson:amdbuild", "clean:tmp"]);
-	grunt.registerTask("build-dojo", ["clean", "jshint", "shell:bowerdeps", "symlink:dojo", "dojo:dist", "clean:tmp"]);
+	grunt.registerTask("build-dojo", ["clean", "jshint", "shell:bowerdeps", "symlink:dojo", "dojo:dist", "copy:dojo"]);
 	grunt.registerTask("default", ["build-requirejs"]);
 };

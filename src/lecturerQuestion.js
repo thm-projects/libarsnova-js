@@ -22,16 +22,16 @@ define(
 		"dojo/Deferred",
 		"dojo/when",
 		"dojo/Stateful",
-		"arsnova-api/store/RestQueryCache",
-		"arsnova-api/globalConfig",
-		"arsnova-api/session",
-		"arsnova-api/socket",
-		"arsnova-api/model/LecturerQuestion",
-		"arsnova-api/model/lecturerQuestionPropertyMap",
-		"arsnova-api/model/AnswerChoiceSummary",
-		"arsnova-api/model/answerChoiceSummaryPropertyMap",
-		"arsnova-api/model/AnswerText",
-		"arsnova-api/model/answerTextPropertyMap"
+		"libarsnova/store/RestQueryCache",
+		"libarsnova/globalConfig",
+		"libarsnova/session",
+		"libarsnova/socket",
+		"libarsnova/model/LecturerQuestion",
+		"libarsnova/model/lecturerQuestionPropertyMap",
+		"libarsnova/model/AnswerChoiceSummary",
+		"libarsnova/model/answerChoiceSummaryPropertyMap",
+		"libarsnova/model/AnswerText",
+		"libarsnova/model/answerTextPropertyMap"
 	],
 	function (declare, string, Deferred, when, Stateful, RestQueryCache, globalConfig, sessionModel, socket, LecturerQuestion, lecturerQuestionPropertyMap, AnswerChoiceSummary, answerChoiceSummaryPropertyMap, AnswerText, answerTextPropertyMap) {
 		"use strict";
