@@ -82,6 +82,17 @@ module.exports = function (grunt) {
 			dir: outdir
 		},
 
+		dojo: {
+			dist: {
+				options: {
+					dojo: "build/tmp/dojo/dojo.js",
+					profile: "build.profile.js",
+					package: ".",
+					releaseDir: "build/tmp"
+				}
+			}
+		},
+
 		// Erase previous build.
 		clean: {
 			build: [outdir],
@@ -96,6 +107,21 @@ module.exports = function (grunt) {
 				src: "<%= " + outprop + ".plugins.rel %>",
 				dest: outdir,
 				dot: true
+			}
+		},
+
+		symlink: {
+			dojo: {
+				files: [
+					{
+						src: "bower_components/dojo",
+						dest: "build/tmp/dojo"
+					},
+					{
+						src: "node_modules/dojo-util",
+						dest: "build/tmp/util"
+					}
+				]
 			}
 		},
 
@@ -150,9 +176,12 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-contrib-clean");
 	grunt.loadNpmTasks("grunt-contrib-copy");
 	grunt.loadNpmTasks("grunt-contrib-jshint");
+	grunt.loadNpmTasks("grunt-contrib-symlink");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
+	grunt.loadNpmTasks("grunt-dojo");
 	grunt.loadNpmTasks("grunt-shell");
 
-	grunt.registerTask("build", ["clean", "jshint", "shell:bowerdeps", "amdbuild:amdloader", "amdreportjson:amdbuild", "clean:tmp"]);
-	grunt.registerTask("default", ["build"]);
+	grunt.registerTask("build-requirejs", ["clean", "jshint", "shell:bowerdeps", "amdbuild:amdloader", "amdreportjson:amdbuild", "clean:tmp"]);
+	grunt.registerTask("build-dojo", ["clean", "jshint", "shell:bowerdeps", "symlink:dojo", "dojo:dist", "clean:tmp"]);
+	grunt.registerTask("default", ["build-requirejs"]);
 };
