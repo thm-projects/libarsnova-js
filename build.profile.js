@@ -21,11 +21,11 @@ var profile = (function () {
 		packages: [
 			{
 				name: "dojo",
-				location: "vendor/dojotoolkit.org/dojo"
+				location: "bower_components/dojo"
 			},
 			{
 				name: "dstore",
-				location: "vendor/sitepen.com/dstore"
+				location: "bower_components/dstore"
 			}
 		],
 
