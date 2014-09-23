@@ -136,6 +136,13 @@ module.exports = function (grunt) {
 			options: {
 				sourceMap: true
 			},
+			amd: {
+				options: {
+					banner: "<%= " + outprop + ".header%>"
+				},
+				src: "<%= " + outprop + ".modules.abs %>",
+				dest: outdir + "libarsnova.js"
+			},
 			requirejs: {
 				options: {
 					banner: "<%= " + outprop + ".header%>"
@@ -174,14 +181,27 @@ module.exports = function (grunt) {
 	// The main build task.
 	grunt.registerTask("amdbuild", function (amdloader) {
 		var name = this.name,
-			layers = grunt.config(name).layers;
+			layers = grunt.config(name).layers,
+			uglifyTask = grunt.config("amdbuild").includeLoader ? "requirejs" : "amd"
+		;
 
 		layers.forEach(function (layer) {
 			grunt.task.run("amddepsscan:" + layer.name + ":" + name + ":" + amdloader);
 			grunt.task.run("amdserialize:" + layer.name + ":" + name + ":" + amdloader + ":" + outprop);
-			grunt.task.run("uglify:requirejs");
+			grunt.task.run("uglify:" + uglifyTask);
 			grunt.task.run("copy:plugins");
 		});
+	});
+
+	grunt.registerTask("includerequirejs", function (amdloader) {
+		grunt.config("amdbuild.includeLoader", true);
+	});
+
+	grunt.registerTask("build", function (amdloader) {
+		grunt.log.writeln("Please use one of the following tasks to build libarsnova:");
+		grunt.log.writeln("* build:dojo         This build includes the Dojo loader [default]");
+		grunt.log.writeln("* build:requirejs    This build includes the RequireJS loader");
+		grunt.log.writeln("* build:amd          This build includes no loader");
 	});
 
 	grunt.loadNpmTasks("grunt-amd-build");
@@ -193,7 +213,8 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-dojo");
 	grunt.loadNpmTasks("grunt-shell");
 
-	grunt.registerTask("build-requirejs", ["clean", "jshint", "shell:bowerdeps", "amdbuild:amdloader", "amdreportjson:amdbuild", "clean:tmp"]);
-	grunt.registerTask("build-dojo", ["clean", "jshint", "shell:bowerdeps", "symlink:dojo", "dojo:dist", "uglify:dojo", "copy:dojoreport", "clean:tmp"]);
-	grunt.registerTask("default", ["build-dojo"]);
+	grunt.registerTask("build:amd", ["clean", "jshint", "shell:bowerdeps", "amdbuild:amdloader", "amdreportjson:amdbuild", "clean:tmp"]);
+	grunt.registerTask("build:requirejs", ["includerequirejs", "build:amd"]);
+	grunt.registerTask("build:dojo", ["clean", "jshint", "shell:bowerdeps", "symlink:dojo", "dojo:dist", "uglify:dojo", "copy:dojoreport", "clean:tmp"]);
+	grunt.registerTask("default", ["build:dojo"]);
 };
