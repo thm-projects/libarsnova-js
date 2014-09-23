@@ -53,7 +53,7 @@ module.exports = function (grunt) {
 
 			// List of layers to build.
 			layers: [{
-				name: "libarsnova",
+				name: "libarsnova/libarsnova",
 				include: [
 					"dojo/_base/window",
 					"dojo/request/xhr",
@@ -85,10 +85,10 @@ module.exports = function (grunt) {
 		dojo: {
 			dist: {
 				options: {
-					dojo: "build/dojo/dojo.js",
+					dojo: tmpdir + "builddeps/dojo/dojo.js",
 					profile: "build.profile.js",
 					package: ".",
-					releaseDir: "build/tmp"
+					releaseDir: tmpdir
 				}
 			}
 		},
@@ -108,11 +108,10 @@ module.exports = function (grunt) {
 				dest: outdir,
 				dot: true
 			},
-			dojo: {
+			dojoreport: {
 				expand: true,
-				flatten: true,
 				cwd: tmpdir,
-				src: ["libarsnova/libarsnova.{js,js.map}", "build-report.txt"],
+				src: "build-report.txt",
 				dest: outdir
 			}
 		},
@@ -122,11 +121,11 @@ module.exports = function (grunt) {
 				files: [
 					{
 						src: "bower_components/dojo",
-						dest: "build/dojo"
+						dest: tmpdir + "builddeps/dojo"
 					},
 					{
 						src: "node_modules/dojo-util",
-						dest: "build/util"
+						dest: tmpdir + "builddeps/util"
 					}
 				]
 			}
@@ -135,12 +134,18 @@ module.exports = function (grunt) {
 		// Config to allow uglify to generate the layer.
 		uglify: {
 			options: {
-				banner: "<%= " + outprop + ".header%>",
 				sourceMap: true
 			},
-			dist: {
+			requirejs: {
+				options: {
+					banner: "<%= " + outprop + ".header%>"
+				},
 				src: ["bower_components/requirejs/require.js", "<%= " + outprop + ".modules.abs %>"],
-				dest: outdir + "<%= " + outprop + ".layerPath %>"
+				dest: outdir + "libarsnova.js"
+			},
+			dojo: {
+				src: tmpdir + "libarsnova/libarsnova.js",
+				dest: outdir + "libarsnova.js"
 			}
 		},
 
@@ -174,7 +179,7 @@ module.exports = function (grunt) {
 		layers.forEach(function (layer) {
 			grunt.task.run("amddepsscan:" + layer.name + ":" + name + ":" + amdloader);
 			grunt.task.run("amdserialize:" + layer.name + ":" + name + ":" + amdloader + ":" + outprop);
-			grunt.task.run("uglify");
+			grunt.task.run("uglify:requirejs");
 			grunt.task.run("copy:plugins");
 		});
 	});
@@ -189,6 +194,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-shell");
 
 	grunt.registerTask("build-requirejs", ["clean", "jshint", "shell:bowerdeps", "amdbuild:amdloader", "amdreportjson:amdbuild", "clean:tmp"]);
-	grunt.registerTask("build-dojo", ["clean", "jshint", "shell:bowerdeps", "symlink:dojo", "dojo:dist", "copy:dojo"]);
-	grunt.registerTask("default", ["build-requirejs"]);
+	grunt.registerTask("build-dojo", ["clean", "jshint", "shell:bowerdeps", "symlink:dojo", "dojo:dist", "uglify:dojo", "copy:dojoreport", "clean:tmp"]);
+	grunt.registerTask("default", ["build-dojo"]);
 };

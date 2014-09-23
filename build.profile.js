@@ -5,7 +5,7 @@ var profile = (function () {
 		basePath: "./",
 		action: "release",
 		mini: true,
-		layerOptimize: "closure",
+		layerOptimize: false,
 		cssOptimize: "comments",
 		stripConsole: "all",
 		selectorEngine: "lite",
