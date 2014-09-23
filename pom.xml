@@ -126,10 +126,10 @@
 						</goals>
 						<configuration>
 							<tasks>
-								<echo message="libarsnova-js makes use of the Grunt for building. Please install Node.js if not yet installed and the following commands:" />
+								<echo message="libarsnova-js utilizes Grunt for building. Install Node.js if not yet installed and run the following commands:" />
 								<echo message="    $ npm install" />
 								<echo message="    $ grunt" />
-								<fail message="libarsnova-js cannot be built by Maven. Please use Grunt instead." />
+								<fail message="libarsnova-js cannot be built by Maven. Use Grunt instead." />
 							</tasks>
 						</configuration>
 					</execution>
