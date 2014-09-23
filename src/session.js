@@ -21,11 +21,11 @@ define(
 		"dojo/_base/declare",
 		"dojo/Deferred",
 		"dojo/Stateful",
-		"arsnova-api/store/RestQueryCache",
-		"arsnova-api/globalConfig",
-		"arsnova-api/socket",
-		"arsnova-api/model/Session",
-		"arsnova-api/model/sessionPropertyMap"
+		"libarsnova/store/RestQueryCache",
+		"libarsnova/globalConfig",
+		"libarsnova/socket",
+		"libarsnova/model/Session",
+		"libarsnova/model/sessionPropertyMap"
 	],
 	function (config, declare, Deferred, Stateful, RestQueryCache, globalConfig, socket, Session, sessionPropertyMap) {
 		"use strict";

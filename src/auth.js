@@ -20,7 +20,7 @@ define(
 		"dojo/string",
 		"dojo/request",
 		"dojo/Deferred",
-		"arsnova-api/globalConfig"
+		"libarsnova/globalConfig"
 	],
 	function (string, request, Deferred, globalConfig) {
 		"use strict";

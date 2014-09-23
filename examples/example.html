@@ -20,12 +20,10 @@ var dojoConfig = {
 <script>
 require(
 	[
-		"arsnova-api-version",
-		"arsnova-api/globalConfig",
-		"arsnova-api/auth"
+		"libarsnova/globalConfig",
+		"libarsnova/auth"
 	],
-	function (version, globalConfig, auth) {
-		console.log("version", version);
+	function (globalConfig, auth) {
 		console.log("globalConfig", globalConfig.get());
 		console.log("services", auth.getServices());
 	}

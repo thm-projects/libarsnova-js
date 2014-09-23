@@ -17,7 +17,7 @@
  */
 define(
 	[
-		"arsnova-api/socket"
+		"libarsnova/socket"
 	],
 	function (socket) {
 		"use strict";
