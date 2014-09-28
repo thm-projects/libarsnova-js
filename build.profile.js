@@ -1,6 +1,8 @@
 var profile = (function () {
 	"use strict";
 
+	var depPath = "bower_components/";
+
 	return {
 		basePath: "./",
 		action: "release",
@@ -12,7 +14,7 @@ var profile = (function () {
 
 		defaultConfig: {
 			async: true,
-			baseUrl: "src",
+			baseUrl: "./",
 			hasCache: {
 				"config-selectorEngine": "lite"
 			}
@@ -21,11 +23,11 @@ var profile = (function () {
 		packages: [
 			{
 				name: "dojo",
-				location: "bower_components/dojo"
+				location: depPath + "dojo"
 			},
 			{
 				name: "dstore",
-				location: "bower_components/dstore"
+				location: depPath + "dstore"
 			}
 		],
 
@@ -35,7 +37,8 @@ var profile = (function () {
 				include: []
 			},
 			"libarsnova/libarsnova": {
-				customBase: true, // do not add dojo/main automatically
+				/* do not add dojo/main automatically */
+				customBase: true,
 				boot: true,
 				include: [
 					"dojo/request/xhr",
@@ -51,8 +54,8 @@ var profile = (function () {
 		},
 
 		staticHasFeatures: {
-			/* These properties allow Closure compiler to remove unused code from Dojo Toolkit
-			 * and further decrease file size of the build */
+			/* These properties allow Closure compiler to remove unused code
+			 * from Dojo Toolkit and further decrease file size of the build */
 			"config-deferredInstrumentation": 0,
 			"config-dojo-loader-catches": 0,
 			"config-stripStrict": 0,
