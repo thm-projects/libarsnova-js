@@ -31,7 +31,7 @@
 	],
 	"dependencies": {
 		"dojo": "1.10",
-		"dstore": "master",
+		"dstore": "0.1.1",
 		"requirejs": "2.1"
 	}
 }
