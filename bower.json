@@ -1,6 +1,5 @@
 {
 	"name": "libarsnova-js",
-	"version": "1.0.0-alpha",
 	"description": "libarsnova is a client library for the Audience Response System ARSnova which transparently handles communication with the backend API.",
 	"authors": [
 		"Daniel Gerhardt <code@dgerhardt.net> (http://dgerhardt.net)"
