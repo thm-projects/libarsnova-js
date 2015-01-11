@@ -2,6 +2,7 @@
 "use strict";
 
 module.exports = function (grunt) {
+	require("time-grunt")(grunt);
 
 	/* The final output directory. */
 	var outdir = "build/";
