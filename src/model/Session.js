@@ -1,6 +1,6 @@
 /*
  * This file is part of libarsnova-js.
- * Copyright 2013-2014 Daniel Gerhardt <code@dgerhardt.net>
+ * Copyright 2013-2015 Daniel Gerhardt <code@dgerhardt.net>
  *
  * libarsnova-js is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
