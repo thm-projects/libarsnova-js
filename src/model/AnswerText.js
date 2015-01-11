@@ -18,7 +18,7 @@
 define(
 	[
 		"dojo/_base/declare",
-		"dstore/Model"
+		"dmodel/Model"
 	],
 	function (declare, Model) {
 		"use strict";

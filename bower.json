@@ -31,7 +31,9 @@
 	],
 	"dependencies": {
 		"dojo": "1.10",
-		"dstore": "0.1.1",
-		"requirejs": "2.1"
+		"dmodel": "0.1",
+		"dstore": "1.0",
+		"requirejs": "2.1",
+		"rql": "~0.3.3"
 	}
 }

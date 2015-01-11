@@ -49,7 +49,7 @@ define(
 									value[this.reversedPropertyMap[property]] = value[property];
 									delete value[property];
 								}
-							} else if (this.model && !this.model.superclass.schema.hasOwnProperty(property)) {
+							} else if (this.model && !this.model.prototype.schema.hasOwnProperty(property)) {
 								value._hidden = value._hidden || {};
 								value._hidden[property] = value[property];
 								delete value[property];
@@ -77,7 +77,7 @@ define(
 								value[this.propertyMap[property]] = value[property];
 								delete value[property];
 							}
-						} else if (this.model && !this.model.superclass.schema.hasOwnProperty(property)) {
+						} else if (this.model && !this.model.prototype.schema.hasOwnProperty(property)) {
 							delete value[property];
 						}
 					}

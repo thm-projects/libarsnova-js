@@ -28,6 +28,14 @@ var profile = (function () {
 			{
 				name: "dstore",
 				location: depPath + "dstore"
+			},
+			{
+				name: "dmodel",
+				location: depPath + "dmodel"
+			},
+			{
+				name: "rql",
+				location: depPath + "rql"
 			}
 		],
 

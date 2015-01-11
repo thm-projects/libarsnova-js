@@ -41,6 +41,14 @@ module.exports = function (grunt) {
 					location: "bower_components/dstore"
 				},
 				{
+					name: "dmodel",
+					location: "bower_components/dmodel"
+				},
+				{
+					name: "rql",
+					location: "bower_components/rql"
+				},
+				{
 					name: "libarsnova",
 					location: "src"
 				}
