@@ -69,14 +69,6 @@ define(
 			self.resetState();
 		});
 
-		socket.on("lecQuestionAvail", function (lecturerQuestionId) {
-
-		});
-
-		socket.on("answersTolecQuestionAvail", function (lecturerQuestionId) {
-
-		});
-
 		self = {
 			getStore: function () {
 				return questionStore;
@@ -163,6 +155,7 @@ define(
 				if (!id) {
 					return null;
 				}
+
 				return questionStore.remove(id);
 			},
 
@@ -327,8 +320,10 @@ define(
 
 			startSecondPiRound: function (questionId) {
 				var question = self.get(questionId);
+
 				return when(question, function (question) {
 					question.round = 2;
+
 					return self.update(question);
 				});
 			},
