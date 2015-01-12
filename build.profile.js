@@ -40,7 +40,7 @@ var profile = (function () {
 		],
 
 		layers: {
-			"dojo/dojo":{
+			"dojo/dojo": {
 				customBase: true,
 				include: []
 			},
