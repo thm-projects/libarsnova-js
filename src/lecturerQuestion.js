@@ -96,7 +96,6 @@ define(
 				} else if ("jitt" === type) {
 					params.preparationquestionsonly = true;
 				}
-//				var questions = questionStore.query(params);
 				var questions = questionStore.filter(params);
 				questionCache = questions.fetch();
 				questionCache.then(function (questions) {
