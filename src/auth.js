@@ -43,7 +43,7 @@ define(
 							username = response.username;
 						}
 					},
-					function (error) {
+					function () {
 						loginError = true;
 					}
 				);

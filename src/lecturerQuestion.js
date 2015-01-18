@@ -65,7 +65,7 @@ define(
 			})
 		;
 
-		sessionModel.watchKey(function (name, oldValue, value) {
+		sessionModel.watchKey(function () {
 			self.resetState();
 		});
 

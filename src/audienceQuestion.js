@@ -40,7 +40,7 @@ define(
 			questionStore = null
 		;
 
-		sessionModel.watchKey(function (name, oldValue, value) {
+		sessionModel.watchKey(function () {
 			questionStore = new AudienceQuestionStore();
 		});
 
