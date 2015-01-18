@@ -3,7 +3,7 @@ var profile = (function () {
 
 	return {
 		resourceTags: {
-			amd: function (filename, mid) {
+			amd: function (filename) {
 				return (/\.js$/).test(filename);
 			}
 		}

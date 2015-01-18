@@ -65,7 +65,7 @@ define(
 			})
 		;
 
-		sessionModel.watchKey(function (name, oldValue, value) {
+		sessionModel.watchKey(function () {
 			self.resetState();
 		});
 
@@ -96,7 +96,6 @@ define(
 				} else if ("jitt" === type) {
 					params.preparationquestionsonly = true;
 				}
-//				var questions = questionStore.query(params);
 				var questions = questionStore.filter(params);
 				questionCache = questions.fetch();
 				questionCache.then(function (questions) {

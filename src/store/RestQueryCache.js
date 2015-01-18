@@ -45,10 +45,8 @@ define(
 					for (var property in value) {
 						if (value.hasOwnProperty(property)) {
 							if (this.reversedPropertyMap.hasOwnProperty(property)) {
-								if (this.reversedPropertyMap[property]) {
-									value[this.reversedPropertyMap[property]] = value[property];
-									delete value[property];
-								}
+								value[this.reversedPropertyMap[property]] = value[property];
+								delete value[property];
 							} else if (this.model && !this.model.prototype.schema.hasOwnProperty(property)) {
 								value._hidden = value._hidden || {};
 								value._hidden[property] = value[property];
@@ -73,10 +71,8 @@ define(
 				for (property in value) {
 					if (value.hasOwnProperty(property) && "_hidden" !== property) {
 						if (this.propertyMap.hasOwnProperty(property)) {
-							if (this.propertyMap[property]) {
-								value[this.propertyMap[property]] = value[property];
-								delete value[property];
-							}
+							value[this.propertyMap[property]] = value[property];
+							delete value[property];
 						} else if (this.model && !this.model.prototype.schema.hasOwnProperty(property)) {
 							delete value[property];
 						}
