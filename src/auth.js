@@ -55,7 +55,7 @@ define(
 				console.log("-- auth.init --");
 
 				checkLoginStatus();
-				if (true === loginError) {
+				if (loginError) {
 					console.log("Auth: user is not logged in");
 					if (loginType) {
 						console.log("Auth: user will be redirected to login service");
