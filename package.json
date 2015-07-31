@@ -1,6 +1,6 @@
 {
 	"name": "libarsnova",
-	"version": "1.0.0-alpha",
+	"version": "1.0.0-alpha.2",
 	"description": "libarsnova is a client library for the Audience Response System ARSnova which transparently handles communication with the backend API.",
 	"author": {
 		"name": "Daniel Gerhardt",
