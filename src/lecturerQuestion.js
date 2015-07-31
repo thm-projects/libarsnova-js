@@ -274,7 +274,7 @@ define(
 							propertyMap: answerChoiceSummaryPropertyMap
 						});
 
-						return answerCountStore[round].filter({round: round}).fetch();
+						return answerCountStore[round].filter({piround: round}).fetch();
 					}
 
 					return answerCountStore[round].cachingStore.fetch();
